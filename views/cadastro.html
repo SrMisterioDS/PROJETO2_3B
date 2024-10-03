@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro - Sistema de Ingressos</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .form-container {
+            background-color: white;
+            padding: 20px;  
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .form-container h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .form-container label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .form-container input[type="text"],
+        .form-container input[type="text"],
+        .form-container input[type="email"],
+        .form-container input[type="password"],
+        .form-container input[type="date"],
+        .form-container input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        .form-container select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        .form-container input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .form-container input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+
+        .form-container .password-wrapper {
+            position: relative;
+        }
+
+        .form-container .password-wrapper input[type="password"] {
+            padding-right: 40px;
+        }
+
+        .form-container .toggle-password {
+            position: absolute;
+            top: 50%;
+            right: 10px;
+            transform: translateY(-50%);
+            cursor: pointer;
+        }
+
+        /* Esconder campos do fornecedor por padrão */
+        .fornecedor-fields {
+            display: none;
+        }
+
+        .cpf-field {
+            display: block;
+        }
+
+        .cnpj-field {
+            display: none;
+        }
+    </style>
+</head>
+</body>
+    <div class="form-container">
+        <h2>Cadastro</h2>
+        <form id="cadastroForm" autocomplete="on">
+            <label for="tipo_usuario">Tipo de Usuário</label>
+            <select id="tipo_usuario" name="tipo_usuario" required>
+                <option value="usuario">Usuário Normal</option>
+                <option value="fornecedor">Fornecedor</option>
+            </select>
+
+            <label for="nome">Nome completo</label>
+            <input type="text" id="nome" name="nome" autocomplete="name" required>
+
+            <label for="email">E-mail</label>
+            <input type="email" id="email" name="email" autocomplete="email" required>
+
+            <div id="cpfField" class="cpf-field">
+                <label for="cpf">CPF</label>
+                <input type="text" id="cpf" name="cpf" autocomplete="cpf">
+            </div>
+
+            <div id="cnpjField" class="cnpj-field">
+                <label for="cnpj">CNPJ</label>
+                <input type="text" id="cnpj" name="cnpj" autocomplete="cnpj">
+            </div>
+
+            <label for="endereco">Endereço</label>
+            <input type="text" id="endereco" name="endereco" autocomplete="address-line1" required>
+
+            <div class="password-wrapper">
+                <label for="senha">Senha</label>
+                <input type="password" id="senha" name="senha" autocomplete="new-password" required>
+                <span class="toggle-password" onclick="togglePassword('senha')">&#128065;</span>
+            </div>
+
+            <div class="password-wrapper">
+                <label for="confirmar_senha">Confirmar Senha</label>
+                <input type="password" id="confirmar_senha" name="confirmar_senha" autocomplete="new-password" required>
+                <span class="toggle-password" onclick="togglePassword('confirmar_senha')">&#128065;</span>
+            </div>
+
+            <input type="submit" value="Cadastrar">
+        </form>
+    </div>
+
+    <script>
+        function togglePassword(fieldId) {
+            const field = document.getElementById(fieldId);
+            const type = field.getAttribute('type') === 'password' ? 'text' : 'password';
+            field.setAttribute('type', type);
+        }
+
+        document.getElementById('tipo_usuario').addEventListener('change', function() {
+            const tipoUsuario = this.value;
+            const cpfField = document.getElementById('cpfField');
+            const cnpjField = document.getElementById('cnpjField');
+
+            if (tipoUsuario === 'fornecedor') {
+                cpfField.style.display = 'none';
+                cnpjField.style.display = 'block';
+            } else {
+                cpfField.style.display = 'block';
+                cnpjField.style.display = 'none';
+            }
+        });
+
+        document.getElementById('cadastroForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Evitar o envio padrão do formulário
+
+            const formData = new FormData(this);
+            const data = {};
+            formData.forEach((value, key) => {
+                data[key] = value;
+
+            });
+
+            fetch( '/api/cadastrar_usuario', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(result => {
+                if (result.redirect) {
+                    window.location.href = result.redirect;
+                } else {
+                    alert(result.error || 'Erro desconhecido.'); // Mostrar erro se ocorrer
+                }
+            })
+            .catch(error => {
+                console.error('Erro:', error);
+                alert('Erro ao cadastrar. Tente novamente mais tarde.');
+            });
+        });
+    </script>
+</body>
+</html>

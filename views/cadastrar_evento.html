@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastrar Evento</title>
+    <link rel="stylesheet" href="/css/cadastrar.css"> <!-- Corrija o caminho -->
+</head>
+
+<body>
+    <header>
+        <h1>Cadastrar Evento</h1>
+    </header>
+        <div class="form-container">
+            <form id="cadastroeventoform" action="/api/cadastrar_evento" method="POST" autocomplete="on">
+
+                <!-- Campos do formulário -->
+                <label for="nome">Nome:</label>
+                <input type="text" id="nome" name="nome" required>
+
+                <label for="descricao">Descrição:</label>
+                <textarea id="descricao" name="descricao" required></textarea>
+
+                <label for="data">Data:</label>
+                <input type="date" id="data" name="data" required>
+
+                <label for="quantidade_ingressos">Quantidade de Ingressos:</label>
+                <input type="number" id="quantidade_ingressos" name="quantidade_ingressos" required>
+
+                <label for="tipo_ingresso">Tipo de Ingresso:</label>
+                <input type="text" id="tipo_ingresso" name="tipo_ingresso" required>
+
+                <label for="preco">Preço:</label>
+                <input type="number" step="0.01" id="preco" name="preco" required>
+
+                <label for="imagem_url">URL da Imagem:</label>
+                <input type="text" id="imagem_url" name="imagem_url" required>
+
+                <button type="submit">Cadastrar Evento</button>
+            </form>
+        </div>
+        <script src="/js/cadastro.js"></script> <!-- Corrija o caminho -->
+
+</body>
+
+</html>

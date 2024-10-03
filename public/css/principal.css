@@ -1,0 +1,161 @@
+/* Reset básico */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Estilo do corpo da página */
+body {
+    font-family: Arial;
+    background-color: #f4f4f4;
+}
+
+/* Estilo do menu lateral */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 60px;
+    height: 100%;
+    background-color: #007bff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 20px;
+}
+
+.sidebar a {
+    text-decoration: none;
+    color: white;
+    margin: 10px 0;
+    text-align: center;
+}
+
+.sidebar img {
+    width: 24px;
+    height: 24px;
+    margin-bottom: 5px;
+}
+
+/* Estilo do conteúdo principal */
+.container {
+    margin-left: 80px; /* Largura do menu lateral + algum espaço */
+    padding: 20px;
+}
+
+/* Estilo do cabeçalho */
+header  {
+    background-color: #007bff;
+    color: white;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+header h1 {
+    margin: 0;
+}
+
+header input[type="text"] {
+    padding: 8px;
+    border: none;
+    border-radius: 4px;
+}
+
+header .btn {
+    color: white;
+    background-color: #0056b3;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 15px;
+    text-decoration: none;
+    font-size: 16px;
+}
+
+header .btn:hover {
+    background-color: #003d7a;
+}
+
+/* Estilo da lista de eventos */
+.event-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.event-item {
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    flex: 1 1 calc(33.333% - 20px); /* Três eventos por linha com espaçamento */
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.event-item img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.event-item div {
+    padding: 15px;
+}
+
+.event-item a {
+    border: 1px;
+    width: 50px;
+    
+}
+
+.event-item button {
+    background-color: #007bff;
+    border: none;
+    color: white;
+    padding: 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-left: 5px;
+}
+
+.event-item but {
+    background-color: #ff0000;
+    border: none;
+    color: white;
+    padding: 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 5px;
+    margin-left: 5px;
+    width: fit-content;
+    margin-bottom: 5px;
+}
+
+
+
+.event-item button:hover {
+    background-color: #0056b3;
+}
+
+.event-item but:hover {
+    background-color: #e72222;
+}
+
+/* Estilo da publicidade */
+.advertisement {
+    background-color: #e9ecef;
+    padding: 20px;
+    border-radius: 5px;
+    margin-top: 20px;
+}
+
+.auth-links {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}

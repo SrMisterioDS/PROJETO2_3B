@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Compra de Ingressos</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+        }
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+        }
+        .event-image {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+        }
+        .event-details {
+            margin-top: 20px;
+        }
+        .buy-tickets {
+            margin-top: 20px;
+        }
+        .buy-tickets input {
+            width: 50px;
+            padding: 5px;
+        }
+        .buy-tickets button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .buy-tickets button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <img id="event-image" class="event-image" src="default-image.png" alt="Imagem do Evento">
+        <div class="event-details">
+            <h1 id="event-name">Nome do Evento</h1>
+            <p id="event-description">Descrição do evento</p>
+            <p id="event-price">Preço: R$ 0,00</p>
+            <p id="event-date">Data: </p>
+        </div>
+        <div class="buy-tickets">
+            <h3>Comprar Ingressos</h3>
+            <label for="quantity">Quantidade:</label>
+            <input type="number" id="quantity" value="1" min="1">
+            <button id="buy-btn">Comprar</button>
+        </div>
+    </div>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+    // Obtém o ID do evento da URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const eventId = urlParams.get('id');
+
+    // Carregar os detalhes do evento
+    loadEventDetails();
+
+    function loadEventDetails() {
+        fetch(`/api/eventos/${eventId}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.message === 'Sucesso') {
+                    const event = data.data;
+                    document.getElementById('event-image').src = event.imagem_url || 'default-image.png';
+                    document.getElementById('event-name').textContent = event.nome;
+                    document.getElementById('event-description').textContent = event.descricao;
+                    document.getElementById('event-price').textContent = `Preço: R$ ${event.preco}`;
+                    document.getElementById('event-date').textContent = `Data: ${new Date(event.data).toLocaleDateString('pt-BR')}`;
+                } else {
+                    console.error('Erro ao carregar evento:', data.error);
+                }
+            })
+            .catch(error => {
+                console.error('Erro ao carregar evento:', error);
+            });
+    }
+
+    // Comprar Ingressos
+    document.getElementById('buy-btn').addEventListener('click', () => {
+        // Verifica se o usuário está autenticado somente ao clicar no botão de compra
+        fetch('/api/verificar-autenticacao')
+            .then(response => response.json())
+            .then(data => {
+                if (!data.autenticado) {
+                    alert('Você precisa estar logado para comprar ingressos. Por favor, cadastre-se ou faça login.');
+                    window.location.href = '/login'; // Redireciona para a página de login
+                } else {
+                    // Se autenticado, procede com a compra
+                    const quantity = document.getElementById('quantity').value;
+                    if (quantity <= 0) {
+                        alert('Quantidade inválida');
+                        return;
+                    }
+
+                    fetch(`/api/comprar`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            eventId: eventId,
+                            quantidade: quantity
+                        })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.message === 'Compra realizada com sucesso!') {
+                            alert('Compra realizada com sucesso!');
+                        } else {
+                            alert('Erro ao realizar compra');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Erro ao realizar compra:', error);
+                    });
+                }
+            });
+    });
+});
+
+
+    </script>
+</body>
+</html>

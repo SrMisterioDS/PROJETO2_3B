@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Fornecedor</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial;
+            background-color: #f4f4f4;
+        }
+
+        /* Estilo do conteúdo principal */
+        .container {
+            margin-left: 80px; /* Largura do menu lateral + algum espaço */
+            padding: 20px;
+        }
+
+        /* Estilo do cabeçalho */
+        header {
+            background-color: #007bff;
+            color: white;
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        header h1 {
+            margin: 0;
+        }
+
+        header input[type="text"] {
+            padding: 8px;
+            border: none;
+            border-radius: 4px;
+        }
+
+        header .btn {
+            color: white;
+            background-color: #0056b3;
+            border: none;
+            border-radius: 4px;
+            padding: 10px 15px;
+            text-decoration: none;
+            font-size: 16px;
+        }
+
+        header .btn:hover {
+            background-color: #003d7a;
+        }
+
+        /* Estilo da lista de eventos */
+        .event-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .event-item {
+            background-color: white;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            flex: 1 1 calc(33.333% - 20px); /* Três eventos por linha com espaçamento */
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .event-item img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .event-item div {
+            padding: 15px;
+        }
+
+        .event-item button {
+            background-color: #007bff;
+            border: none;
+            color: white;
+            padding: 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-left: 5px;
+        }
+
+        .event-item button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Estilo da publicidade */
+        .advertisement {
+            background-color: #e9ecef;
+            padding: 20px;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+
+        .auth-links {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Easy Tickets - Meu Perfil Fornecedor</h1>
+            <!-- Barra de Pesquisa -->
+            <input type="text" id="search-bar" placeholder="Pesquisar eventos...">
+            
+            <!-- Adicionar links de Cadastro e Login -->
+            <div class="auth-links">
+                <button id="logout-btn" class="btn">Sair</button>
+                <a href="/cadastrar_evento" class="btn">Cadastrar Evento</a>
+            </div>
+        </header>
+        <section class="event-list" id="event-list">
+            <!-- Eventos serão carregados aqui pelo JavaScript -->
+        </section>
+        <div class="advertisement">
+            <h3>Publicidade</h3>
+            <img src="imagens/download.jpg" alt="patrocinador">
+            <img src="imagens/download (1).jpg" alt="patrocinador">
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const eventList = document.getElementById('event-list');
+
+            function loadEvents() {
+                fetch('/api/meus-eventos') // Rota para pegar eventos do fornecedor
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.message === 'Sucesso') {
+                            displayEvents(data.data);
+                        } else {
+                            console.error('Erro ao carregar eventos:', data.error);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Erro ao carregar eventos:', error);
+                    });
+            }
+
+            function displayEvents(events) {
+                eventList.innerHTML = '';
+
+                events.forEach(event => {
+                    const eventItem = document.createElement('div');
+                    eventItem.className = 'event-item';
+
+                    const eventImage = document.createElement('img');
+                    eventImage.src = event.imagem_url || 'default-image.png';
+                    eventImage.alt = event.nome || 'Imagem do Evento';
+
+                    const eventDetails = document.createElement('div');
+                    const eventName = document.createElement('h3');
+                    eventName.textContent = event.nome || 'Nome não disponível';
+
+                    const eventDescription = document.createElement('p');
+                    eventDescription.textContent = event.descricao || 'Descrição não disponível';
+
+                    const eventPrice = document.createElement('p');
+                    eventPrice.textContent = `Preço: R$ ${event.preco}`;
+
+                    const eventButtonEdit = document.createElement('a');
+                    eventButtonEdit.href = `editar-evento.html?id=${event.id}`;
+                    eventButtonEdit.innerHTML = '<button>Editar Evento</button>';
+
+                    const eventButtonDelete = document.createElement('button');
+                    eventButtonDelete.textContent = 'Excluir';
+                    eventButtonDelete.addEventListener('click', () => {
+                        if (confirm('Você tem certeza que deseja excluir este evento?')) {
+                            fetch(`/api/eventos/${event.id}`, { method: 'DELETE' })
+                                .then(response => response.json())
+                                .then(data => {
+                                    if (data.message === 'Evento deletado com sucesso!') {
+                                        alert('Evento deletado com sucesso!');
+                                        loadEvents(); // Recarregar eventos
+                                    } else {
+                                        alert('Erro ao deletar evento.');
+                                    }
+                                });
+                        }
+                    });
+
+                    eventDetails.appendChild(eventName);
+                    eventDetails.appendChild(eventDescription);
+                    eventDetails.appendChild(eventPrice);
+                    eventItem.appendChild(eventImage);
+                    eventItem.appendChild(eventDetails);
+                    eventItem.appendChild(eventButtonEdit);
+                    eventItem.appendChild(eventButtonDelete);
+
+                    eventList.appendChild(eventItem);
+                });
+            }
+
+            loadEvents();
+        });
+
+        // Adicionando a confirmação ao logout
+        document.getElementById('logout-btn').addEventListener('click', () => {
+            const confirmLogout = confirm('Você realmente deseja deslogar?');
+            if (confirmLogout) {
+                fetch('/logout')
+                    .then(() => {
+                        window.location.href = '/'; // Redireciona para a página de login após logout
+                    })
+                    .catch(err => {
+                        console.error('Erro ao fazer logout:', err);
+                    });
+            }
+        });
+    </script>
+</body>
+</html>

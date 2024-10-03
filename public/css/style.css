@@ -1,0 +1,224 @@
+/* Geral */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+header, .sidebar {
+    background-color: #007bff;
+    color: white;
+}
+
+header {
+    padding: 15px;
+    text-align: center;
+    position: relative;
+}
+
+header h1 {
+    margin: 0;
+}
+
+.header-links {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+}
+
+.header-links a {
+    color: white;
+    text-decoration: none;
+    margin: 0 10px;
+    padding: 5px 10px;
+    border: 1px solid transparent;
+    border-radius: 5px;
+    background-color: #0056b3;
+}
+
+.header-links a:hover {
+    background-color: #003d7a;
+}
+
+.container {
+    margin: 20px;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 200px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    padding-top: 20px;
+    z-index: 1000;
+}
+
+.sidebar a {
+    display: block;
+    color: white;
+    padding: 10px 15px;
+    text-decoration: none;
+    margin: 5px 0;
+    border-radius: 5px;
+}
+
+.sidebar a:hover {
+    background-color: #0056b3;
+}
+
+.sidebar img {
+    vertical-align: middle;
+    width: 24px;
+    height: 24px;
+    margin-right: 10px;
+}
+
+/* Página Principal */
+#search-bar {
+    width: 300px;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    margin-bottom: 20px;
+}
+
+.event-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.event-item {
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    overflow: hidden;
+    width: 300px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.event-item img {
+    width: 100%;
+    height: auto;
+}
+
+.event-item div {
+    padding: 15px;
+}
+
+.event-item h3 {
+    margin: 0 0 10px;
+}
+
+.event-item p {
+    margin: 0;
+}
+
+.event-item button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+}
+
+.event-item button:hover {
+    background-color: #0056b3;
+}
+
+.advertisement {
+    margin-top: 20px;
+    background-color: #eee;
+    padding: 15px;
+    border-radius: 5px;
+    text-align: center;
+}
+
+/* Cadastro e Login */
+form {
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    max-width: 500px;
+    margin: auto;
+}
+
+form h2 {
+    margin-top: 0;
+}
+
+input[type="text"],
+input[type="password"],
+input[type="email"],
+input[type="date"],
+input[type="number"] {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+input[type="submit"] {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+}
+
+input[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+input[type="checkbox"] {
+    margin-right: 10px;
+}
+
+label {
+    display: block;
+    margin: 10px 0;
+}
+
+.toggle-password {
+    position: relative;
+}
+
+.toggle-password input[type="password"] {
+    padding-right: 30px;
+}
+
+.toggle-password .eye-icon {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+
+/* Cadastrar Evento */
+.event-form {
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+    margin: auto;
+}
+
+.event-form input,
+.event-form textarea,
+.event-form select {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid 
+}  
