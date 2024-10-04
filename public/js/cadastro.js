@@ -22,7 +22,7 @@ document.getElementById('cadastroeventoform').addEventListener('submit', functio
                 window.location.href = result.redirect;
             } else {
                 alert(result.error || 'Erro desconhecido.'); // Mostrar erro se ocorrer
-                window.location.href = '/dashboard-fornecedor.html'; // Redireciona
+                window.location.href = '/dashboard-fornecedor.html'; // Redireciona 
             }
         })
         .catch(error => {
